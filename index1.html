@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bobiverse: Replicant System Mainframe</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific menu modifications built on top of style.css layout */
+        .hub-container {
+            max-width: 650px;
+            margin: 80px auto;
+            background: var(--hud-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+        .menu-title {
+            color: var(--bob-blue);
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .menu-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+        }
+        .portal-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .portal-btn {
+            display: block;
+            background: #0f1522;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+        .portal-btn:hover {
+            border-color: var(--bob-blue);
+            background: rgba(0, 210, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        .portal-btn .title {
+            display: block;
+            font-weight: bold;
+            color: var(--bob-blue);
+            margin-bottom: 4px;
+        }
+        .portal-btn .desc {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hub-container">
+        <div class="menu-title">BOB_OS // MAIN_FRAME_LOADED</div>
+        <div class="menu-desc">Select an operational sub-space matrix system routine to allocate mind cycles.</div>
+        
+        <div class="portal-grid">
+            <!-- Link to 3D Game environment -->
+            <a href="game.html" class="portal-btn">
+                <span class="title">🚀 [ROUTINE] 3D Sector Flight Matrix</span>
+                <span class="desc">Pilot your HEAVEN-1 probe through asteroid clusters, gather alloys, and print Buster Drones.</span>
+            </a>
+
+            <!-- Link to Conway's Game of Life -->
+            <a href="life.html" class="portal-btn">
+                <span class="title">🧬 [ALGORITHM] Consciousness Synthesis Matrix</span>
+                <span class="desc">Execute localized cellular evolution loops to simulate civilization patterns and replicant neural matrix drift.</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
