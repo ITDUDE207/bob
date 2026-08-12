@@ -1,0 +1,21 @@
+<button onclick="triggerPrank()">Download File</button>
+
+<script>
+function triggerPrank() {
+    document.body.innerHTML = `
+        <div style="background:black; color:#00ff00; font-family:monospace; padding:20px; height:100vh; box-sizing:border-box;">
+            <p>> Connecting to server...</p>
+            <p>> Access Granted.</p>
+            <p style="color:red;">> WARNING: INITIATING SYSTEM PURGE (C:/Windows)...</p>
+            <p id="progress">Progress: 0%</p>
+        </div>
+    `;
+    let percent = 0;
+    setInterval(() => {
+        if(percent < 100) {
+            percent += 10;
+            document.getElementById('progress').innerText = `Progress: ${percent}%`;
+        }
+    }, 400);
+}
+</script>
