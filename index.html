@@ -3,87 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bobiverse: Replicant System Mainframe</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Secure File Downloader</title>
     <style>
-        /* Specific menu modifications built on top of style.css layout */
-        .hub-container {
-            max-width: 650px;
-            margin: 80px auto;
-            background: var(--hud-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            text-align: center;
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #f8f9fa; user-select: none; overflow: hidden; }
+        .landing-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 20px; box-sizing: border-box; }
+        .download-card { background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); max-width: 450px; width: 100%; }
+        .btn { padding: 14px 28px; font-size: 16px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; width: 100%; box-sizing: border-box; }
+        .btn:active { transform: scale(0.98); }
+        .btn-download { background-color: #007bff; color: #ffffff; }
+        .btn-download:hover { background-color: #0069d9; }
+        .config-label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; text-align: left; }
+        .config-select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box; background: #fff; margin-bottom: 16px; }
+        .config-checkbox-group { display: flex; align-items: flex-start; margin-bottom: 12px; text-align: left; }
+        .config-checkbox-group input { margin-top: 3px; margin-right: 10px; cursor: pointer; }
+        .config-checkbox-label { font-size: 13px; color: #555; line-height: 1.4; cursor: pointer; }
+        #prank-screen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999999; box-sizing: border-box; overflow: hidden; }
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(0px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(2px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(2px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
-        .menu-title {
-            color: var(--bob-blue);
-            font-size: 1.6rem;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        .menu-desc {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 30px;
-        }
-        .portal-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .portal-btn {
-            display: block;
-            background: #0f1522;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 18px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            text-align: left;
-        }
-        .portal-btn:hover {
-            border-color: var(--bob-blue);
-            background: rgba(0, 210, 255, 0.05);
-            transform: translateY(-2px);
-        }
-        .portal-btn .title {
-            display: block;
-            font-weight: bold;
-            color: var(--bob-blue);
-            margin-bottom: 4px;
-        }
-        .portal-btn .desc {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .shake-screen { animation: shake 0.15s infinite; color: #ff3333 !important; }
+        .cursor { animation: blink 1s step-end infinite; }
+        p { margin: 5px 0; line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <div class="hub-container">
-        <div class="menu-title">BOB_OS // MAIN_FRAME_LOADED</div>
-        <div class="menu-desc">Select an operational sub-space matrix system routine to allocate mind cycles.</div>
-        
-        <div class="portal-grid">
-            <!-- Link to 3D Game environment -->
-            <a href="game.html" class="portal-btn">
-                <span class="title">🚀 [ROUTINE] 3D Sector Flight Matrix</span>
-                <span class="desc">Pilot your HEAVEN-1 probe through asteroid clusters, gather alloys, and print Buster Drones.</span>
-            </a>
-
-            <!-- Link to Conway's Game of Life -->
-            <a href="life.html" class="portal-btn">
-                <span class="title">🧬 [ALGORITHM] Consciousness Synthesis Matrix</span>
-                <span class="desc">Execute localized cellular evolution loops to simulate civilization patterns and replicant neural matrix drift.</span>
-            </a>
-        </div>
+<div class="landing-container">
+    <div class="download-card">
+        <h2 style="margin-top: 0; color: #333333;">Ready to Download</h2>
+        <p style="color: #666666; font-size: 15px; margin-bottom: 30px; line-height: 1.5;">
+            Your requested file package is compiled and securely encrypted. Click the button below to initialize transmission.
+        </p>
+        <button id="download-btn" class="btn btn-download" onclick="startEverything()">📥 Secure Download Now</button>
     </div>
+</div>
 
+<div id="prank-screen"></div>
+
+<script>
+function getOS() {
+    if (navigator.userAgentData && navigator.userAgentData.platform) return navigator.userAgentData.platform;
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("win") !== -1) return "Windows";
+    if (ua.indexOf("mac") !== -1 && !("ontouchend" in document)) return "macOS";
+    if (ua.indexOf("linux") !== -1) return "Linux";
+    if (/iphone|ipad|ipod/.test(ua) || (ua.indexOf("mac") !== -1 && "ontouchend" in document)) return "iOS";
+    if (ua.indexOf("android") !== -1) return "Android";
+    return "Unknown OS";
+}
+
+function forceSafariFullscreen() {
+    var elem = document.documentElement;
+    if (elem.requestFullscreen) { elem.requestFullscreen().catch(function(){}); } 
+    else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+    document.getElementById('prank-screen').style.display = 'block';
+}
+
+function startEverything() {
+    forceSafariFullscreen();
+    triggerPrank();
+}
+
+function triggerPrank() {
+    var os = getOS();
+    var p1 = os === "Windows" ? "C:\\Windows\\System32\\drivers\\etc\\hosts" : "/etc/pam.d/su";
+    var p2 = os === "Windows" ? "C:\\Users\\Admin\\AppData\\Local\\" : "/Users/root/.ssh/authorized_keys";
+
+    var prankScreen = document.getElementById('prank-screen');
+    prankScreen.innerHTML = '<div id="terminal" style="background:#050505; color:#00ff33; font-family:monospace; font-size:15px; padding:25px; height:100%; width:100%; box-sizing:border-box; overflow:hidden;"><div id="terminal-content"></div><span class="cursor">_</span></div>';
+
+    var content = document.getElementById('terminal-content');
+    var terminal = document.getElementById('terminal');
+    
+    var lines = [
+        { text: "> Initialising kernel override context... [OK]", delay: 200 },
+        { text: "> Target architecture identified: " + os + " x64", delay: 400 },
+        { text: "> Establishing encrypted handshake with bypass relay...", delay: 600 },
+        { text: "> Injecting payload to memory address 0x7FFF5BE3", delay: 900 },
+        { text: "> Locating host volume... Found root structure.", delay: 1300 },
+        { text: "> Granting local privilege escalation (UID 0)... SUCCESS", delay: 1600 },
+        { text: "> Modifying: " + p1 + " ... [CORRUPTED]", delay: 2000, color: '#ffcc00' },
+        { text: "> Wiping encryption keys: " + p2 + " ... [DELETED]", delay: 2400, color: '#ffcc00' },
+        { text: "\\n[CRITICAL ERROR] UNHANDLED EXCEPTION IN ROOT KERNEL", delay: 3000, color: '#ff3333' },
+        { text: "> FORCED SYSTEM UNLINK INITIATED BY SYSTEM POLICY", delay: 3400, color: '#ff3333' }
+    ];
+
+    lines.forEach(function(line) {
+        setTimeout(function() {
+            var p = document.createElement('p');
+            if (line.color) p.style.color = line.color;
+            p.innerText = line.text;
+            content.appendChild(p);
+        }, line.delay);
+    });
+
+    setTimeout(function() {
+        terminal.classList.add('shake-screen');
+        var percent = 0;
+        var progressP = document.createElement('p');
+        progressP.style.fontSize = "24px"; 
+        progressP.style.fontWeight = "bold";
+        content.appendChild(progressP);
+
+        var interval = setInterval(function() {
+            if (percent < 100) {
+                percent += 1;
+                progressP.innerText = "!!! PERMANENT HARD DRIVE PURGE: " + percent + "% !!!";
+            } else {
+                clearInterval(interval);
+                terminal.classList.remove('shake-screen');
+                startBobOSInstallation(prankScreen);
+            }
+        }, 40); 
+    }, 4000);
+}
+
+function startBobOSInstallation(prankScreen) {
+    var terminal = document.getElementById('terminal');
+    terminal.style.background = "#ffffff";
+    terminal.innerHTML = "";
+
+    setTimeout(function() {
+        terminal.style.background = "#2b4270"; 
+        terminal.style.color = "#ffffff"; 
+        terminal.style.fontFamily = "sans-serif";
+        terminal.style.display = "flex"; 
+        terminal.style.flexDirection = "column"; 
+        terminal.style.alignItems = "center"; 
+        terminal.style.justifyContent = "center";
+
+        terminal.innerHTML = '<div id="wizard-box" style="background:#f0f0f0; color:#333; padding:40px; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.5); width:480px; text-align:center; transition:all 0.3s ease;">' +
+            '<h2 style="margin-top:0; color:#2b4270; font-size:28px;">🤠 BobOS Setup Wizard</h2>' +
+            '<p id="bob-desc" style="font-size:14px; margin-bottom:20px; color:#666;">Your previous operating system was successfully replaced.</p>' +
+            '<div id="progress-container" style="background:#e0e0e0; border-radius:4px; height:20px; width:100%; overflow:hidden; margin-bottom:10px;">' +
+                '<div id="bob-progress-bar" style="background:#4caf50; width:0%; height:100%; transition:width 0.1s linear;"></div>' +
+            '</div>' +
+            '<div id="bob-status" style="font-size:13px; font-weight:bold; color:#444; height:20px;">Preparing installation files...</div>' +
+            '<div style="border-top:1px solid #ccc; margin-top:25px; padding-top:15px; text-align:right;">' +
+                '<button id="bob-btn" disabled style="padding:8px 20px; background:#ccc; border:none; border-radius:4px; cursor:not-allowed; font-weight:bold; color:#777;">Please Wait...</button>' +
+            '</div>' +
+        '</div>';
+
+        var progressBar = document.getElementById('bob-progress-bar');
+        var statusText = document.getElementById('bob-status');
+        var actionBtn = document.getElementById('bob-btn');
+        var installPercent = 0;
+        
+        var steps = [
+            { t: 15, txt: "Extracting BobCore architecture..." }, 
+            { t: 40, txt: "Setting up default desktop wallpapers..." },
+            { t: 65, txt: "Optimizing system compatibility parameters..." }, 
+            { t: 85, txt: "Registering user profile with Bob..." },
+            { t: 99, txt: "Finalising setup configurations..." }
+        ];
+
+        var installInterval = setInterval(function() {
+            if (installPercent < 100) {
+                installPercent += 1;
+                progressBar.style.width = installPercent + "%";
+                var step = steps.find(function(s) { return installPercent <= s.t; });
+                if (step) statusText.innerText = step.txt;
+            } else {
+                clearInterval(installInterval);
+                statusText.innerText = "Files deployed successfully."; 
+                statusText.style.color = "#4caf50";
+                actionBtn.removeAttribute('disabled'); 
+                actionBtn.innerText = "Configure Environment";
+                actionBtn.style.background = "#2b4270"; 
+                actionBtn.style.color = "#fff"; 
+                actionBtn.style.cursor = "pointer";
+                actionBtn.onclick = showCustomConfigPanel;
+            }
+        }, 40);
+    }, 300);
+}
+
+function showCustomConfigPanel() {
+    document.getElementById('wizard-box').innerHTML = '<h2 style="margin-top:0; color:#2b4270; font-size:24px; text-align:left; border-bottom:2px solid #2b4270; padding-bottom:10px; margin-bottom:20px;">⚙️ Environment Customisation</h2>' +
+        '<div style="margin-bottom:15px; text-align:left;">' +
+            '<label class="config-label">File System Management Kernel</label>' +
+            '<select class="config-select"><option>BobFS v4.2 (Journaled, Encrypted)</option><option>ExtBob distributed architecture</option></select>' +
+        '</div>' +
+        '<div style="margin-bottom:15px; text-align:left;">' +
+            '<label class="config-label">Telemetry Optimization Engine</label>' +
+            '<select class="config-select"><option>Transmit parameters to Bob</option><option>Aggressive telemetry logging</option></select>' +
+        '</div>' +
+        '<div style="margin-top:20px; border-top:1px solid #ddd; padding-top:15px;">' +
+            '<div class="config-checkbox-group">' +
+                '<input type="checkbox" id="chk-telemetry" checked>' +
+                '<label for="chk-telemetry" class="config-checkbox-label">Authorize Bob Core modules to re-route system context nodes.</label>' +
+            </div>' +
+            '<div class="config-checkbox-group">' +
+                '<input type="checkbox" id="chk-eula" onchange="toggleFinishBtn(this)">' +
+                '<label for="chk-eula" class="config-checkbox-label"><strong>I accept</strong> the BobOS Licensing Directive parameters.</label>' +
+            </div>' +
+        '</div>' +
+        <div style="border-top:1px solid #ccc; margin-top:25px; padding-top:15px; text-align:right;">' +
+            '<button id="final-btn" disabled style="padding:10px 24px; background:#ccc; border:none; border-radius:4px; cursor:not-allowed; font-weight:bold; color:#777;">Finish Setup</button>' +
+        '</div>';
+}
+
+function toggleFinishBtn(checkbox) {
+    var finalBtn = document.getElementById('final-btn');
+    if (checkbox.checked) {
+        finalBtn.removeAttribute('disabled'); 
+        finalBtn.style.background = "#4caf50"; 
+        finalBtn.style.color = "#fff"; 
+        finalBtn.style.cursor = "pointer";
+        finalBtn.onclick = function() {
+            if (document.exitFullscreen) { document.exitFullscreen().catch(function(){}); }
+            else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+            location.reload();
+        };
+    } else {
+        finalBtn.setAttribute('disabled', 'true'); 
+        finalBtn.style.background = "#ccc"; 
+        finalBtn.style.color = "#777"; 
+        finalBtn.style.cursor = "not-allowed";
+    }
+}
+</script>
 </body>
 </html>
