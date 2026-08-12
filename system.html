@@ -138,12 +138,15 @@ function goFullscreen() {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
         elem.requestFullscreen().catch(() => {});
-    } else if (elem.webkitRequestFullscreen) {
+    } else if (elem.webkitRequestFullScreen) { /* Capital 'S' strictly for macOS Safari */
+        elem.webkitRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Lowercase 's' fallback for Chrome/Brave/Opera on Mac */
         elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
+    } else if (elem.msRequestFullscreen) { /* IE11 */
         elem.msRequestFullscreen();
     }
 }
+
 
 function monitorFullscreenState() {
     const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
