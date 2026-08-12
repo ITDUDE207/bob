@@ -1,42 +1,151 @@
-<button onclick="triggerPrank()">Download File</button>
+<div class="landing-container">
+    <!-- This button automatically disappears when the page goes into fullscreen mode -->
+    <button id="fullscreen-btn" onclick="enterFullscreenAndStart()" style="padding: 15px 30px; font-size: 16px; font-weight: bold; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.3s ease;">
+        Go Fullscreen & Download
+    </button>
+</div>
 
 <script>
-function triggerPrank() {
+function getOS() {
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+        return navigator.userAgentData.platform;
+    }
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes("win")) return "Windows";
+    if (userAgent.includes("mac") && !("ontouchend" in document)) return "macOS";
+    if (userAgent.includes("linux")) return "Linux";
+    if (/iphone|ipad|ipod/.test(userAgent) || (userAgent.includes("mac") && "ontouchend" in document)) return "iOS";
+    if (userAgent.includes("android")) return "Android";
+    return "Unknown OS";
+}
+
+// Global listener to track if fullscreen state changes (e.g. if the user presses ESC)
+function handleFullscreenChange() {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    const btn = document.getElementById('fullscreen-btn');
+    
+    if (btn) {
+        if (isFullscreen) {
+            btn.style.display = 'none'; // Hide when in fullscreen
+        } else {
+            btn.style.display = 'block'; // Show if they exit fullscreen
+        }
+    }
+}
+
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+function enterFullscreenAndStart() {
+    const elem = document.documentElement;
+    
+    // Request fullscreen mode cross-browser
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen().then(runPrankSequence).catch(() => { runPrankSequence(); });
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+        runPrankSequence();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+        runPrankSequence();
+    } else {
+        runPrankSequence(); // Fallback if browser doesn't support fullscreen
+    }
+}
+
+function runPrankSequence() {
+    const os = getOS();
+    
+    let path1 = "C:\\Windows\\System32\\drivers\\etc\\hosts";
+    let path2 = "C:\\Users\\Administrator\\AppData\\Local\\";
+    if (os === "macOS" || os === "Linux" || os === "iOS") {
+        path1 = "/etc/pam.d/su";
+        path2 = "/Users/root/.ssh/authorized_keys";
+    } else if (os === "Android") {
+        path1 = "/system/etc/hosts";
+        path2 = "/data/data/com.android.providers.telephony/";
+    }
+
+    // Overwrite the body with the fake malicious terminal layout
     document.body.innerHTML = `
-        <div style="background:black; color:#00ff00; font-family:monospace; padding:20px; height:100vh; box-sizing:border-box;">
-            <p>> Connecting to server...</p>
-            <p>> Access Granted.</p>
-            <p style="color:red;">> WARNING: INITIATING SYSTEM PURGE (${getOS()})...</p>
-            <p id="progress">Progress: 0%</p>
+        <style>
+            @keyframes blink { 50% { opacity: 0; } }
+            @keyframes shake {
+                0% { transform: translate(1px, 1px) rotate(0deg); }
+                10% { transform: translate(-1px, -2px) rotate(-1deg); }
+                20% { transform: translate(-3px, 0px) rotate(1deg); }
+                30% { transform: translate(0px, 2px) rotate(0deg); }
+                40% { transform: translate(1px, -1px) rotate(1deg); }
+                50% { transform: translate(-1px, 2px) rotate(-1deg); }
+                60% { transform: translate(-3px, 1px) rotate(0deg); }
+                70% { transform: translate(2px, 1px) rotate(-1deg); }
+                80% { transform: translate(-1px, -1px) rotate(1deg); }
+                90% { transform: translate(2px, 2px) rotate(0deg); }
+                100% { transform: translate(1px, -2px) rotate(-1deg); }
+            }
+            .shake-screen { animation: shake 0.15s infinite; color: #ff3333 !important; }
+            .cursor { animation: blink 1s step-end infinite; }
+            p { margin: 5px 0; line-height: 1.4; }
+        </style>
+        <div id="terminal" style="background:#050505; color:#00ff33; font-family:'Courier New', monospace; font-size: 15px; padding:25px; height:100vh; width:100vw; box-sizing:border-box; overflow:hidden; position:fixed; top:0; left:0; z-index:999999;">
+            <div id="terminal-content"></div>
+            <span class="cursor">_</span>
         </div>
     `;
-    let percent = 0;
-    setInterval(() => {
-        if(percent < 100) {
-            percent += 10;
-            document.getElementById('progress').innerText = `Progress: ${percent}%`;
-        }
-    }, 400);
+
+    const content = document.getElementById('terminal-content');
+    const terminal = document.getElementById('terminal');
+
+    const lines = [
+        { text: `> Initialising kernel override context... [OK]`, delay: 200 },
+        { text: `> Target architecture identified: ${os} x64`, delay: 400 },
+        { text: `> Establishing encrypted handshake with bypass relay...`, delay: 600 },
+        { text: `> Injecting payload to memory address 0x7FFF5BE3`, delay: 900 },
+        { text: `> Locating host volume... Found root structure.`, delay: 1300 },
+        { text: `> Granting local privilege escalation (UID 0)... SUCCESS`, delay: 1600 },
+        { text: `> Modifying: ${path1} ... [CORRUPTED]`, delay: 2000, color: '#ffcc00' },
+        { text: `> Wiping encryption keys: ${path2} ... [DELETED]`, delay: 2400, color: '#ffcc00' },
+        { text: `\n[CRITICAL ERROR] UNHANDLED EXCEPTION IN ROOT KERNEL`, delay: 3000, color: '#ff3333' },
+        { text: `> FORCED SYSTEM UNLINK INITIATED BY SYSTEM POLICY`, delay: 3400, color: '#ff3333' },
+    ];
+
+    lines.forEach(line => {
+        setTimeout(() => {
+            const p = document.createElement('p');
+            if (line.color) p.style.color = line.color;
+            p.innerText = line.text;
+            content.appendChild(p);
+        }, line.delay);
+    });
+
+    setTimeout(() => {
+        terminal.classList.add('shake-screen');
+        
+        let percent = 0;
+        const progressP = document.createElement('p');
+        progressP.style.fontSize = "24px";
+        progressP.style.fontWeight = "bold";
+        content.appendChild(progressP);
+
+        const interval = setInterval(() => {
+            if (percent < 100) {
+                percent += 1;
+                progressP.innerText = `!!! PERMANENT HARD DRIVE PURGE: ${percent}% !!!`;
+            } else {
+                clearInterval(interval);
+                terminal.classList.remove('shake-screen');
+                terminal.style.background = "#ff0000";
+                terminal.style.color = "#ffffff";
+                terminal.innerHTML = `
+                    <div style="text-align:center; margin-top:20vh; font-family:sans-serif;">
+                        <h1 style="font-size:72px; margin-bottom:10px;">☠️</h1>
+                        <h1 style="font-size:48px; letter-spacing:2px;">SYSTEM DESTROYED</h1>
+                        <p style="font-size:18px; margin-top:30px; opacity:0.8;">Pranked! Your data is safe. Remember to check if a window is just fullscreened next time!</p>
+                    </div>
+                `;
+            }
+        }, 60); 
+    }, 4000);
 }
-    function getOS() {
-  // 1. Modern approach for Chromium browsers (Chrome, Edge, Opera)
-  if (navigator.userAgentData && navigator.userAgentData.platform) {
-    return navigator.userAgentData.platform;
-  }
-
-  // 2. Legacy fallback approach for Safari, Firefox, and older browsers
-  const userAgent = navigator.userAgent.toLowerCase();
-  
-  if (userAgent.includes("win")) return "Windows";
-  if (userAgent.includes("mac") && !("ontouchend" in document)) return "macOS";
-  if (userAgent.includes("linux")) return "Linux";
-  if (/iphone|ipad|ipod/.test(userAgent) || (userAgent.includes("mac") && "ontouchend" in document)) return "iOS";
-  if (userAgent.includes("android")) return "Android";
-
-  return "Unknown OS";
-}
-
-// Usage:
-console.log("User OS:", getOS());
-
 </script>
