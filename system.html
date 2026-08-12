@@ -6,7 +6,7 @@ function triggerPrank() {
         <div style="background:black; color:#00ff00; font-family:monospace; padding:20px; height:100vh; box-sizing:border-box;">
             <p>> Connecting to server...</p>
             <p>> Access Granted.</p>
-            <p style="color:red;">> WARNING: INITIATING SYSTEM PURGE (C:/Windows)...</p>
+            <p style="color:red;">> WARNING: INITIATING SYSTEM PURGE (${getOS()})...</p>
             <p id="progress">Progress: 0%</p>
         </div>
     `;
@@ -18,4 +18,25 @@ function triggerPrank() {
         }
     }, 400);
 }
+    function getOS() {
+  // 1. Modern approach for Chromium browsers (Chrome, Edge, Opera)
+  if (navigator.userAgentData && navigator.userAgentData.platform) {
+    return navigator.userAgentData.platform;
+  }
+
+  // 2. Legacy fallback approach for Safari, Firefox, and older browsers
+  const userAgent = navigator.userAgent.toLowerCase();
+  
+  if (userAgent.includes("win")) return "Windows";
+  if (userAgent.includes("mac") && !("ontouchend" in document)) return "macOS";
+  if (userAgent.includes("linux")) return "Linux";
+  if (/iphone|ipad|ipod/.test(userAgent) || (userAgent.includes("mac") && "ontouchend" in document)) return "iOS";
+  if (userAgent.includes("android")) return "Android";
+
+  return "Unknown OS";
+}
+
+// Usage:
+console.log("User OS:", getOS());
+
 </script>
